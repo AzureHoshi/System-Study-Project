@@ -37,8 +37,7 @@
     "lint:eslint:fix": "eslint --ignore-path .gitignore --ignore-pattern internals/scripts --fix",
     "lint:js": "npm run lint:eslint -- . ",
     "lint:staged": "lint-staged",
-    "prettify": "prettier --write",
-    "test": "jest"
+    "prettify": "prettier --write"
   },
   "browserslist": [
     "last 1 version",
