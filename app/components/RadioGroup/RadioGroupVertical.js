@@ -12,6 +12,10 @@ const RadioGroupVertical = (props) => {
 
   const handleChangeValue = (event) => {
     setValue(event.target.value);
+
+    // สำหรับแบบ object
+    // const select = { questId: questionsId, answerId: event.target.value };
+
     const select = [questionsId, event.target.value];
     handleChange(select);
   };

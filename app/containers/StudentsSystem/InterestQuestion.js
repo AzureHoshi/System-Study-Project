@@ -24,10 +24,38 @@ export default function InterestQuestion() {
     const updatedAnswers = [...selectedAnswers];
     updatedAnswers[Ans[0] - 1] = [Ans[0], Ans[1]];
     setSelectedAnswers(updatedAnswers);
+
+    //   ทดสอบแก้ค่าแบบ object
+    //   const sameQuestion = selectedAnswers.find(
+    //     (element1) => element1.questId === Ans.questId
+    //   );
+    //   const duplicated = selectedAnswers.find(
+    //     (element2) => element2.answerId === Ans.answerId
+    //   );
+    //   if (sameQuestion) {
+    //     console.log('same question!');
+    //     if (!duplicated) {
+    //       console.log('New value!');
+    //       const updatedAns = selectedAnswers.map((answer) => {
+    //         if (answer.questId === Ans.questId) {
+    //           return { ...answer, answerId: Ans.answerId };
+    //         }
+    //         return answer;
+    //       });
+
+    //       setSelectedAnswers(updatedAns);
+    //     } else {
+    //       console.log('Value us duplicated');
+    //     }
+    //   } else {
+    //     console.log('New Question ,New value!');
+    //     const updatedQuest = [...selectedAnswers, Ans];
+    //     setSelectedAnswers(updatedQuest);
+    //   }
   };
 
   const submit = () => {
-    console.log(selectedAnswers);
+    console.log(' Submit Log :', selectedAnswers);
   };
   return (
     <div>
