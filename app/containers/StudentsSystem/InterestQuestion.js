@@ -16,9 +16,10 @@ export default function InterestQuestion() {
     questions.map((question) => setSelectedAnswers([[question.id, '-']]));
   }, []);
 
-  useEffect(() => {
-    console.log(selectedAnswers);
-  }, [selectedAnswers]);
+  // log เพื่อเช็คค่าคำตอบที่ส่งมา
+  // useEffect(() => {
+  //   console.log(selectedAnswers);
+  // }, [selectedAnswers]);
 
   const handleChange = (Ans) => {
     const updatedAnswers = [...selectedAnswers];
