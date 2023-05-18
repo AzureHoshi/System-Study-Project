@@ -55,7 +55,8 @@ export default function InterestQuestion() {
     //   }
   };
 
-  const submit = () => {
+  const handleSubmit = (event) => {
+    event.preventDefault();
     console.log(' Submit Log :', selectedAnswers);
   };
   return (
@@ -96,35 +97,42 @@ export default function InterestQuestion() {
         >
           <Box
             sx={{
-              display: 'inline-flex',
-              justifyContent: 'center',
+              display: 'flex',
               flexDirection: 'column',
-              alignContent: 'center',
-              border: '1px solid',
+              justifyContent: 'center',
+              alignItems: 'center',
               width: '50%',
+              fontWeight: 'regular',
             }}
           >
-            <FormControl>
-              {questions.map((question) => (
-                <RadioGroupVertical
-                  key={question.id}
-                  questionsId={question.id}
-                  Labelquestion={question.Labelquestion}
-                  answerLabels={question.answers}
-                  handleChange={handleChange}
-                />
-              ))}
-              <Button
-                variant='contained'
-                color='success'
-                onClick={submit}
-                sx={{
-                  width: '50%',
-                }}
-              >
-                ยืนยัน
-              </Button>
-            </FormControl>
+            <form onSubmit={handleSubmit}>
+              <FormControl>
+                {questions.map((question) => (
+                  <RadioGroupVertical
+                    key={question.id}
+                    questionsId={question.id}
+                    Labelquestion={question.Labelquestion}
+                    answerLabels={question.answers}
+                    handleChange={handleChange}
+                  />
+                ))}
+                <Box
+                  sx={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}
+                >
+                  <Button
+                    variant='contained'
+                    color='success'
+                    type='submit'
+                  >
+                    ยืนยัน
+                  </Button>
+                </Box>
+              </FormControl>
+            </form>
           </Box>
         </Box>
       </PapperBlock>

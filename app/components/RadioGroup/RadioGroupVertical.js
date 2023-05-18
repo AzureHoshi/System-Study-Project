@@ -5,6 +5,7 @@ import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
+import { Typography } from '@mui/material';
 
 const RadioGroupVertical = (props) => {
   const [value, setValue] = React.useState('');
@@ -20,8 +21,14 @@ const RadioGroupVertical = (props) => {
     handleChange(select);
   };
   return (
-    <FormControl>
-      <FormLabel id='demo-radio-buttons-group-label'>{Labelquestion}</FormLabel>
+    <FormControl component='fieldset'>
+      <FormLabel
+        id='questions-radiogroup-select'
+        component='legend'
+        sx={{ color: 'black' }}
+      >
+        <Typography sx={{ fontSize: '2.4rem' }}>{Labelquestion}</Typography>
+      </FormLabel>
       <RadioGroup
         key={questionsId}
         aria-labelledby='demo-radio-buttons-group-label'
@@ -35,7 +42,11 @@ const RadioGroupVertical = (props) => {
             key={index}
             value={answerLabel.id}
             control={<Radio />}
-            label={answerLabel.answer}
+            label={
+              <Typography sx={{ fontSize: '1.5rem' }}>
+                {answerLabel.answer}
+              </Typography>
+            }
           />
         ))}
       </RadioGroup>
