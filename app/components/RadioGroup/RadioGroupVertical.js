@@ -1,3 +1,5 @@
+/** @format */
+
 import React from 'react';
 import PropTypes from 'prop-types';
 import Radio from '@mui/material/Radio';
@@ -28,8 +30,7 @@ const RadioGroupVertical = (props) => {
         defaultValue='female'
         name='radio-buttons-group'
         value={value}
-        onChange={handleChangeValue}
-      >
+        onChange={handleChangeValue}>
         {answerLabels.map((answerLabel, index) => (
           <FormControlLabel
             key={index}
