@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import Box from '@mui/material/Box';
 import { Helmet } from 'react-helmet';
-import FormControl from '@mui/material/FormControl';
-import Button from '@mui/material/Button';
+import { Box, FormControl, Button } from '@mui/material';
 import brand from 'dan-api/dummy/brand';
 import { PapperBlock, RadioGroupVertical } from 'dan-components';
 import questions from '../../api/dummy/question';
@@ -88,25 +86,20 @@ export default function InterestQuestion() {
         title='แบบสอบถามความสนใจต่อสายงานด้านต่างๆ'
         desc='Some text description'
       >
-        <Box
-          sx={{
-            display: 'flex',
-            width: '100%',
-            justifyContent: 'center',
-          }}
-        >
+        <form onSubmit={handleSubmit}>
           <Box
             sx={{
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'center',
-              alignItems: 'center',
-              width: '50%',
-              fontWeight: 'regular',
+              width: '100%',
             }}
           >
-            <form onSubmit={handleSubmit}>
-              <FormControl>
+            <FormControl>
+              <Box
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  width: '100%',
+                }}
+              >
                 {questions.map((question) => (
                   <RadioGroupVertical
                     key={question.id}
@@ -116,25 +109,28 @@ export default function InterestQuestion() {
                     handleChange={handleChange}
                   />
                 ))}
-                <Box
-                  sx={{
-                    display: 'flex',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }}
-                >
-                  <Button
-                    variant='contained'
-                    color='success'
-                    type='submit'
-                  >
-                    ยืนยัน
-                  </Button>
-                </Box>
-              </FormControl>
-            </form>
+              </Box>
+            </FormControl>
           </Box>
-        </Box>
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'row',
+              justifyContent: 'flex-end',
+              width: '100%',
+              pr: 2,
+            }}
+          >
+            <Button
+              variant='contained'
+              color='success'
+              type='submit'
+              sx={{ alignSelf: 'end' }}
+            >
+              ยืนยัน
+            </Button>
+          </Box>
+        </form>
       </PapperBlock>
     </div>
   );
