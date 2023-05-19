@@ -18,9 +18,10 @@ const RadioGroupVertical = (props) => {
     setValue(event.target.value);
 
     // สำหรับแบบ object
-    // const select = { questId: questionsId, answerId: event.target.value };
+    const select = { questId: questionsId, answerId: event.target.value };
 
-    const select = [questionsId, event.target.value];
+    // แบบ array
+    // const select = [questionsId, event.target.value];
     handleChange(select);
   };
   return (

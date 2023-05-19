@@ -11,46 +11,31 @@ export default function InterestQuestion() {
   const [selectedAnswers, setSelectedAnswers] = useState([]);
 
   useEffect(() => {
-    questions.map((question) => setSelectedAnswers([[question.id, '-']]));
+    questions.forEach((quest) => {
+      selectedAnswers.push({
+        questId: quest.id,
+        answerId: '0',
+      });
+    });
   }, []);
 
   // log เพื่อเช็คค่าคำตอบที่ส่งมา
-  // useEffect(() => {
-  //   console.log(selectedAnswers);
-  // }, [selectedAnswers]);
+  useEffect(() => {
+    console.log(selectedAnswers);
+  }, [selectedAnswers]);
 
   const handleChange = (Ans) => {
-    const updatedAnswers = [...selectedAnswers];
-    updatedAnswers[Ans[0] - 1] = [Ans[0], Ans[1]];
-    setSelectedAnswers(updatedAnswers);
+    // const updatedAnswers = [...selectedAnswers];
+    // updatedAnswers[Ans[0] - 1] = [Ans[0], Ans[1]];
+    // setSelectedAnswers(updatedAnswers);
 
-    //   ทดสอบแก้ค่าแบบ object
-    //   const sameQuestion = selectedAnswers.find(
-    //     (element1) => element1.questId === Ans.questId
-    //   );
-    //   const duplicated = selectedAnswers.find(
-    //     (element2) => element2.answerId === Ans.answerId
-    //   );
-    //   if (sameQuestion) {
-    //     console.log('same question!');
-    //     if (!duplicated) {
-    //       console.log('New value!');
-    //       const updatedAns = selectedAnswers.map((answer) => {
-    //         if (answer.questId === Ans.questId) {
-    //           return { ...answer, answerId: Ans.answerId };
-    //         }
-    //         return answer;
-    //       });
-
-    //       setSelectedAnswers(updatedAns);
-    //     } else {
-    //       console.log('Value us duplicated');
-    //     }
-    //   } else {
-    //     console.log('New Question ,New value!');
-    //     const updatedQuest = [...selectedAnswers, Ans];
-    //     setSelectedAnswers(updatedQuest);
-    //   }
+    const updatedAns = selectedAnswers.map((answer) => {
+      if (answer.questId === Ans.questId) {
+        return { ...answer, answerId: Ans.answerId };
+      }
+      return answer;
+    });
+    setSelectedAnswers(updatedAns);
   };
 
   const handleSubmit = (event) => {
