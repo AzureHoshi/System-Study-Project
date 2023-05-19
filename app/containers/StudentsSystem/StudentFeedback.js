@@ -32,8 +32,9 @@ function StudentFeedback() {
         />
       </Helmet>
       <PapperBlock
-        title='Blank Page'
-        desc='Some text description'>
+        title='แบบประเมินความพึงพอใจที่มีต่อเว็บไซค์'
+        desc='เลือกคะแนนที่ตรงกับความพึงพอใจมากที่สุด'
+      >
         Content
       </PapperBlock>
     </div>

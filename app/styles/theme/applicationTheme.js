@@ -16,7 +16,7 @@ const applicationTheme = (color, mode, direction) => ({
   },
   typography: {
     useNextVariants: true,
-    fontFamily: ['Open Sans', 'sans-serif'].join(','),
+    fontFamily: ['Noto Sans Thai'].join(','),
     title: {
       fontWeight: 600,
     },

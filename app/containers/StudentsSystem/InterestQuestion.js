@@ -98,6 +98,7 @@ export default function InterestQuestion() {
                   display: 'flex',
                   flexDirection: 'column',
                   width: '100%',
+                  pl: '1.5rem',
                 }}
               >
                 {questions.map((question) => (
@@ -116,7 +117,7 @@ export default function InterestQuestion() {
             sx={{
               display: 'flex',
               flexDirection: 'row',
-              justifyContent: 'flex-end',
+              justifyContent: 'center',
               width: '100%',
               pr: 2,
             }}
@@ -125,7 +126,6 @@ export default function InterestQuestion() {
               variant='contained'
               color='success'
               type='submit'
-              sx={{ alignSelf: 'end' }}
             >
               ยืนยัน
             </Button>
