@@ -1,6 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
-import { Box, FormControl, Button } from '@mui/material';
+import {
+  Box,
+  FormControl,
+  Button,
+  DialogTitle,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+} from '@mui/material';
 import brand from 'dan-api/dummy/brand';
 import { PapperBlock, RadioGroupVertical } from 'dan-components';
 import questions from '../../api/dummy/question';
@@ -9,6 +18,9 @@ export default function InterestQuestion() {
   const title = brand.name + ' - Blank Page';
   const description = brand.desc;
   const [selectedAnswers, setSelectedAnswers] = useState([]);
+  const [checkAnswers, setCheckAnswers] = useState([]);
+  const [openPopupAns, setOpenPopupAns] = useState(false);
+  const [openPopupConfirm, setOpenPopupConfirm] = useState(false);
 
   useEffect(() => {
     questions.forEach((quest) => {
@@ -20,15 +32,11 @@ export default function InterestQuestion() {
   }, []);
 
   // log เพื่อเช็คค่าคำตอบที่ส่งมา
-  useEffect(() => {
-    console.log(selectedAnswers);
-  }, [selectedAnswers]);
+  // useEffect(() => {
+  //   console.log(selectedAnswers);
+  // }, [selectedAnswers]);
 
   const handleChange = (Ans) => {
-    // const updatedAnswers = [...selectedAnswers];
-    // updatedAnswers[Ans[0] - 1] = [Ans[0], Ans[1]];
-    // setSelectedAnswers(updatedAnswers);
-
     const updatedAns = selectedAnswers.map((answer) => {
       if (answer.questId === Ans.questId) {
         return { ...answer, answerId: Ans.answerId };
@@ -38,10 +46,29 @@ export default function InterestQuestion() {
     setSelectedAnswers(updatedAns);
   };
 
+  // ใช้เช็คว่าเลือกคำตอบทุกข้อหรือยัง
+  const checkAns = () => {
+    const filteredQuestIds = selectedAnswers
+      .filter((item) => item.answerId === '0')
+      .map((item) => item.questId);
+    setCheckAnswers(filteredQuestIds);
+    if (filteredQuestIds.length > 0) setOpenPopupAns(true);
+    else {
+      setOpenPopupConfirm(true);
+    }
+  };
+
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log(' Submit Log :', selectedAnswers);
+    // console.log(' Submit Log :', selectedAnswers);
+    checkAns();
   };
+
+  const handleClose = () => {
+    setOpenPopupAns(false);
+    setOpenPopupConfirm(false);
+  };
+
   return (
     <div>
       <Helmet>
@@ -117,6 +144,62 @@ export default function InterestQuestion() {
           </Box>
         </form>
       </PapperBlock>
+      <Dialog
+        open={openPopupAns}
+        onClose={handleClose}
+        aria-labelledby='alert-dialog-title'
+        aria-describedby='alert-dialog-description'
+      >
+        <DialogTitle id='alert-dialog-title'>
+          {'โปรดกรอกข้อมูลให้ครบทุกข้อ'}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id='alert-dialog-description'>
+            ข้อที่ยังไม่ได้เลือกคือข้อที่
+            {checkAnswers.map((checkAnswer, index) => (
+              <React.Fragment key={checkAnswer}>
+                {` ${checkAnswer}${
+                  index !== checkAnswers.length - 1 ? ', ' : ''
+                }`}
+              </React.Fragment>
+            ))}
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button
+            onClick={handleClose}
+            autoFocus
+          >
+            ตกลง
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      <Dialog
+        open={openPopupConfirm}
+        onClose={handleClose}
+        aria-labelledby='alert-dialog-title'
+        aria-describedby='alert-dialog-description'
+      >
+        <DialogTitle id='alert-dialog-title'>
+          {'ยืนยันส่งแบบประเมินความสนใจ'}
+        </DialogTitle>
+        <DialogContent></DialogContent>
+        <DialogActions>
+          <Button
+            onClick={handleClose}
+            autoFocus
+          >
+            ตกลง
+          </Button>
+          <Button
+            onClick={handleClose}
+            autoFocus
+          >
+            ยกเลิก
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 }
