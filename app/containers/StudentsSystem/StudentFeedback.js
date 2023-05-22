@@ -32,7 +32,7 @@ function StudentFeedback() {
 
   const checkAns = () => {
     const filteredfeedbackIds = selectedAnswers
-      .filter((item) => item.answerId === '-')
+      .filter((item) => item.answerId === '-' && item.feedbackId <= 6)
       .map((item) => item.feedbackId);
     setCheckAnswers(filteredfeedbackIds);
     if (filteredfeedbackIds.length > 0) setOpenPopupAns(true);
