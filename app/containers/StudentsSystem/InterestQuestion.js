@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Helmet } from 'react-helmet';
+
+// Mui
 import {
   Box,
   FormControl,
@@ -10,13 +11,14 @@ import {
   DialogContent,
   DialogContentText,
 } from '@mui/material';
-import brand from 'dan-api/dummy/brand';
+
+// คำถาม
 import { PapperBlock, RadioGroupVertical } from 'dan-components';
+
+// ข้อมูลจำลอง
 import questions from '../../api/dummy/question';
 
 export default function InterestQuestion() {
-  const title = brand.name + ' - Blank Page';
-  const description = brand.desc;
   const [selectedAnswers, setSelectedAnswers] = useState([]);
   const [checkAnswers, setCheckAnswers] = useState([]);
   const [openPopupAns, setOpenPopupAns] = useState(false);
@@ -71,29 +73,6 @@ export default function InterestQuestion() {
 
   return (
     <div>
-      <Helmet>
-        <title>{title}</title>
-        <meta
-          name='description'
-          content={description}
-        />
-        <meta
-          property='og:title'
-          content={title}
-        />
-        <meta
-          property='og:description'
-          content={description}
-        />
-        <meta
-          property='twitter:title'
-          content={title}
-        />
-        <meta
-          property='twitter:description'
-          content={description}
-        />
-      </Helmet>
       <PapperBlock
         title='แบบสอบถามความสนใจต่อสายงานด้านต่างๆ'
         desc='Some text description'
