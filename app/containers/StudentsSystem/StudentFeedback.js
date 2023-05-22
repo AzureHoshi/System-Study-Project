@@ -74,6 +74,9 @@ function StudentFeedback() {
   const handleSubmit = (event) => {
     event.preventDefault();
     checkAns();
+
+    // เช็คผลลัพธ์
+    // console.log('Submit: ', selectedAnswers);
   };
 
   return (
