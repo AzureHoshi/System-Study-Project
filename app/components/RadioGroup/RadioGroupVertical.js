@@ -36,7 +36,6 @@ const RadioGroupVertical = (props) => {
       <RadioGroup
         key={questionsId}
         aria-labelledby='demo-radio-buttons-group-label'
-        defaultValue='female'
         name='radio-buttons-group'
         value={value}
         onChange={handleChangeValue}
