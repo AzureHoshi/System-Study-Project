@@ -8,7 +8,6 @@ import {
   RadioGroup,
   FormControlLabel,
   FormControl,
-  FormLabel,
   Button,
   Box,
   Typography,
@@ -208,12 +207,7 @@ function CheckType({ feedbackid, question, type, handleChange }) {
     return (
       <>
         <FormControl component='fieldset'>
-          <FormLabel
-            id='demo-row-radio-buttons-group-label'
-            sx={{ color: 'black' }}
-          >
-            <Typography sx={{ fontSize: '1.5rem' }}>{question}</Typography>
-          </FormLabel>
+          <Typography sx={{ fontSize: '1.5rem' }}>{question}</Typography>
           <RadioGroup
             row
             aria-labelledby='demo-row-radio-buttons-group-label'

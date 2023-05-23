@@ -7,7 +7,6 @@ import {
   RadioGroup,
   FormControlLabel,
   FormControl,
-  FormLabel,
 } from '@mui/material';
 
 const RadioGroupVertical = (props) => {
@@ -26,13 +25,7 @@ const RadioGroupVertical = (props) => {
   };
   return (
     <FormControl component='fieldset'>
-      <FormLabel
-        id='questions-radiogroup-select'
-        component='legend'
-        sx={{ color: 'black' }}
-      >
-        <Typography sx={{ fontSize: '2rem' }}>{Labelquestion}</Typography>
-      </FormLabel>
+      <Typography sx={{ fontSize: '2rem' }}>{Labelquestion}</Typography>
       <RadioGroup
         key={questionsId}
         aria-labelledby='demo-radio-buttons-group-label'
