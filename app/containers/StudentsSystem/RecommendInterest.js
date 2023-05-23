@@ -1,40 +1,38 @@
 import React from 'react';
-import { Helmet } from 'react-helmet';
-import brand from 'dan-api/dummy/brand';
-import { PapperBlock } from 'dan-components';
+
+import { Box } from '@mui/material';
+import { PapperBlock, Cardcooperative } from 'dan-components';
+
+// data
+import studentprojects from '../../api/dummy/studentprojects';
 
 function RecommendInterest() {
-  const title = brand.name + ' - Blank Page';
-  const description = brand.desc;
   return (
     <div>
-      <Helmet>
-        <title>{title}</title>
-        <meta
-          name='description'
-          content={description}
-        />
-        <meta
-          property='og:title'
-          content={title}
-        />
-        <meta
-          property='og:description'
-          content={description}
-        />
-        <meta
-          property='twitter:title'
-          content={title}
-        />
-        <meta
-          property='twitter:description'
-          content={description}
-        />
-      </Helmet>
       <PapperBlock
-        title='Blank Page'
-        desc='Some text description'>
-        Content
+        title='แนะนำโครงงาน และ สหกิจที่'
+        desc=''
+      >
+        <Box
+          sx={{
+            width: '100%',
+            display: 'flex',
+            flexDirection: 'row',
+          }}
+        >
+          {studentprojects.map((project) => (
+            <Box
+              sx={{ m: '1rem' }}
+              key={project.projectId}
+            >
+              <Cardcooperative
+                projectName={project.projectName}
+                projectDetails={project.projectDetails}
+                projectImg={project.projectImg}
+              ></Cardcooperative>
+            </Box>
+          ))}
+        </Box>
       </PapperBlock>
     </div>
   );
