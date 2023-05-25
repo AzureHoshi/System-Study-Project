@@ -1,23 +1,24 @@
 import React from 'react';
 
 import { Box } from '@mui/material';
-import { PapperBlock, Cardcooperative } from 'dan-components';
-
+import { Cardcooperative } from 'dan-components';
 // data
 import studentprojects from '../../api/dummy/studentprojects';
 
 function RecommendInterest() {
   return (
     <div>
-      <PapperBlock
-        title='แนะนำโครงงาน และ สหกิจที่'
-        desc=''
-      >
+      <Box sx={{ width: '100%' }}>
         <Box
           sx={{
-            width: '100%',
             display: 'flex',
-            flexDirection: 'row',
+            flexWrap: 'wrap',
+            p: 1,
+            m: 1,
+            bgcolor: 'background.paper',
+            maxWidth: '100%',
+            borderRadius: 1,
+            justifyContent: 'center',
           }}
         >
           {studentprojects.map((project) => (
@@ -27,13 +28,13 @@ function RecommendInterest() {
             >
               <Cardcooperative
                 projectName={project.projectName}
-                projectDetails={project.projectDetails}
+                projectTags={project.projectTags}
                 projectImg={project.projectImg}
               ></Cardcooperative>
             </Box>
           ))}
         </Box>
-      </PapperBlock>
+      </Box>
     </div>
   );
 }
