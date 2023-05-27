@@ -11,34 +11,33 @@ import {
   CardActionArea,
   CardActions,
   Chip,
-  Box,
+  Stack,
 } from '@mui/material';
 
 const Cardcooperative = (props) => {
   const { projectName, projectTags, projectImg } = props;
   console.log(projectImg);
   return (
-    <Card sx={{ maxWidth: 300 }}>
+    <Card sx={{ maxWidth: 280 }}>
       <CardActionArea>
         <CardMedia
           component='img'
-          height='300'
+          height='280'
           image={projectImg}
         />
         <CardContent>
           <Typography
             gutterBottom
-            variant='h5'
+            variant='h6'
             component='div'
           >
             {projectName}
           </Typography>
-          <Box
-            sx={{
-              display: 'flex',
-              flexDirection: 'row',
-              justifyContent: 'space-evenly',
-            }}
+          <Stack
+            direction='row'
+            justifyContent='center'
+            alignItems='flex-start'
+            spacing={0.5}
           >
             {projectTags.map((tag) => (
               <Chip
@@ -46,7 +45,7 @@ const Cardcooperative = (props) => {
                 label={tag.tagName}
               />
             ))}
-          </Box>
+          </Stack>
         </CardContent>
       </CardActionArea>
       <CardActions>

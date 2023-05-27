@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+// import axios from 'axios';
 
 // Mui
 import {
@@ -17,21 +18,43 @@ import { PapperBlock, RadioGroupVertical } from 'dan-components';
 
 // ข้อมูลจำลอง
 import questions from '../../api/dummy/question';
+// const interestSurveyId = 1;
 
 export default function InterestQuestion() {
   const [selectedAnswers, setSelectedAnswers] = useState([]);
   const [checkAnswers, setCheckAnswers] = useState([]);
   const [openPopupAns, setOpenPopupAns] = useState(false);
   const [openPopupConfirm, setOpenPopupConfirm] = useState(false);
+  // const [questions, setQuestions] = useState([]);
+  const [defaultselectedAnswers, setDefaultselectedAnswers] = useState([]);
 
   useEffect(() => {
     questions.forEach((quest) => {
-      selectedAnswers.push({
-        questId: quest.id,
-        answerId: '0',
-      });
+      setDefaultselectedAnswers(
+        selectedAnswers.push({
+          questId: quest.id,
+          answerId: '0',
+        })
+      );
     });
   }, []);
+
+  // useEffect(() => {
+  //   axios
+  //     .post('http://localhost:3200/api/v1/interest_questions', {
+  //       interest_survey_id: 1,
+  //     })
+  //     .then((response) => {
+  //       setQuestions(response.data);
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //     });
+  // }, []);
+
+  useEffect(() => {
+    console.log('questions: ', questions);
+  }, [questions]);
 
   // log เพื่อเช็คค่าคำตอบที่ส่งมา
   // useEffect(() => {
@@ -71,13 +94,20 @@ export default function InterestQuestion() {
     setOpenPopupConfirm(false);
   };
 
+  const handleReset = () => {
+    setSelectedAnswers(defaultselectedAnswers);
+  };
+
   return (
     <div>
       <PapperBlock
         title='แบบสอบถามความสนใจต่อสายงานด้านต่างๆ'
         desc='Some text description'
       >
-        <form onSubmit={handleSubmit}>
+        <form
+          onSubmit={handleSubmit}
+          onReset={handleReset}
+        >
           <Box
             sx={{
               width: '100%',
@@ -110,15 +140,24 @@ export default function InterestQuestion() {
               flexDirection: 'row',
               justifyContent: 'center',
               width: '100%',
-              pr: 2,
+              borderRadius: 1,
             }}
           >
             <Button
               variant='contained'
               color='success'
               type='submit'
+              sx={{ m: 1 }}
             >
               ยืนยัน
+            </Button>
+            <Button
+              variant='outlined'
+              color='error'
+              sx={{ m: 1 }}
+              type='reset'
+            >
+              reset
             </Button>
           </Box>
         </form>

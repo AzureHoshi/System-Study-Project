@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box } from '@mui/material';
+import { Box, Typography, Button } from '@mui/material';
 import { Cardcooperative } from 'dan-components';
 // data
 import studentprojects from '../../api/dummy/studentprojects';
@@ -8,7 +8,34 @@ import studentprojects from '../../api/dummy/studentprojects';
 function RecommendInterest() {
   return (
     <div>
-      <Box sx={{ width: '100%' }}>
+      <Box
+        sx={{
+          p: 1,
+          m: 0.5,
+          maxWidth: '100%',
+        }}
+      >
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+          }}
+        >
+          <Typography
+            variant='h4'
+            gutterBottom
+          >
+            แนะนำโปรเจ็ค
+          </Typography>
+          <Box>
+            <Button variant='contained'>กรอกประเภทโปรเจ็ค</Button>
+            <Button variant='contained'>กรอกจากความใหม่</Button>
+            <Button variant='contained'>นึกไม่ออก</Button>
+          </Box>
+        </Box>
+      </Box>
+      <Box sx={{ width: '100%', border: 1 }}>
         <Box
           sx={{
             display: 'flex',
