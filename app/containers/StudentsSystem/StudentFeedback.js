@@ -1,12 +1,5 @@
-import React, { useState } from 'react';
-import {
-  Box,
-  Button,
-  Container,
-  Rating,
-  TextField,
-  Typography,
-} from '@mui/material';
+import React, { useState, useEffect } from 'react';
+import { Box, Button, Container, Rating, TextField, Typography } from '@mui/material';
 import axios from 'axios';
 import { PapperBlock } from 'dan-components';
 import questions from '../../api/dummy/feedbacksQuestion';
@@ -15,24 +8,30 @@ function StudentFeedback() {
   // const [questions, setQuestions] = useState([]);
   const [formData, setFormData] = useState({});
 
-  const handleSubmit = () => {
-    // แปลงข้อมูลก่อนส่งไปยัง API
-    const transformedData = questions.map((question) => {
-      if (question.type === 'rating') {
-        return {
-          questionId: question.id,
-          answerId: parseInt(formData[`question${question.id}`], 10),
-        };
-      }
-      if (question.type === 'text') {
-        return {
-          questionId: question.id,
-          answerText: formData[`question${question.id}`],
-        };
-      }
-      return null;
-    });
+  useEffect(() => {
+    console.log(formData);
+  }, [formData]);
 
+  const handleSubmit = () => {
+    // ตรวจสอบว่าต้องตอบข้อที่เป็น rating ทุกข้อให้ครบ
+    const unansweredQuestions = questions.filter(
+      (question) => question.type === 'rating' && !formData[`question${question.feedbackId}`]
+    );
+
+    if (unansweredQuestions.length > 0) {
+      // มีข้อที่ยังไม่ได้เลือก
+      const unansweredQuestionIds = unansweredQuestions.map((question) => question.feedbackId);
+      alert(`กรุณาเลือกคำตอบของข้อที่: ${unansweredQuestionIds.join(', ')}`);
+      return;
+    }
+
+    // แปลงข้อมูลก่อนส่งไปยัง API
+    const transformedData = questions.map((question) => ({
+      questionId: question.feedbackId,
+      answerId: formData[`question${question.feedbackId}`],
+    }));
+
+    // ส่งข้อมูลไปยัง API ด้วย axios post
     axios
       .post('http://localhost:3200/api/v1/interest_questions', transformedData)
       .then((response) => {
@@ -68,20 +67,18 @@ function StudentFeedback() {
                 sx={{ mt: 2 }}
               >
                 <Typography
-                  variant='subtitle1'
+                  variant='h6'
                   gutterBottom
                 >
-                  {question.fb_question}
+                  {question.feedbackId}. {question.fb_question}
                 </Typography>
                 {question.type === 'rating' ? (
                   <Rating
                     name={`question${question.feedbackId}`}
+                    size='large'
                     value={formData[`question${question.feedbackId}`] || null}
                     onChange={(event, value) => {
-                      handleChangeAnswer(
-                        `question${question.feedbackId}`,
-                        value
-                      );
+                      handleChangeAnswer(`question${question.feedbackId}`, value);
                     }}
                   />
                 ) : question.type === 'text' ? (
@@ -91,10 +88,7 @@ function StudentFeedback() {
                     fullWidth
                     value={formData[`question${question.feedbackId}`] || ''}
                     onChange={(event) => {
-                      handleChangeAnswer(
-                        `question${question.feedbackId}`,
-                        event.target.value
-                      );
+                      handleChangeAnswer(`question${question.feedbackId}`, event.target.value);
                     }}
                   />
                 ) : null}
