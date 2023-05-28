@@ -6,7 +6,7 @@ import questions from '../../api/dummy/feedbacksQuestion';
 
 function StudentFeedback() {
   // const [questions, setQuestions] = useState([]);
-  const [formData, setFormData] = useState({});
+  const [formData, setFormData] = useState({ studentId: 1 });
 
   useEffect(() => {
     console.log(formData);
@@ -27,13 +27,15 @@ function StudentFeedback() {
 
     // แปลงข้อมูลก่อนส่งไปยัง API
     const transformedData = questions.map((question) => ({
-      questionId: question.feedbackId,
-      answerId: formData[`question${question.feedbackId}`],
+      student_id: formData.studentId,
+      feedback_id: question.feedbackId,
+      feedback_answer: formData[`question${question.feedbackId}`],
     }));
 
+    console.log(transformedData);
     // ส่งข้อมูลไปยัง API ด้วย axios post
     axios
-      .post('http://localhost:3200/api/v1/interest_questions', transformedData)
+      .post('http://localhost:3200/api/v1/student_feedback', transformedData)
       .then((response) => {
         console.log(response.data);
       })
@@ -43,7 +45,7 @@ function StudentFeedback() {
   };
 
   const handleReset = () => {
-    setFormData({});
+    setFormData({ studentId: 1 });
   };
 
   const handleChangeAnswer = (questionId, answer) => {
