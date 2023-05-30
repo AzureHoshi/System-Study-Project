@@ -17,7 +17,11 @@ function StudentFeedback() {
     axios
       .post('http://localhost:3200/api/v1/getstatusfeedback', studentId)
       .then((response) => {
-        console.log(response.data);
+        console.log(response.data.statusFeedback);
+        if (response.data.statusFeedback === 0) {
+          return setStatus(true);
+        }
+        return setStatus(false);
       })
       .catch((error) => {
         console.error(error);
