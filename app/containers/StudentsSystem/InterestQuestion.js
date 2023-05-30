@@ -2,100 +2,66 @@ import React, { useState, useEffect } from 'react';
 // import axios from 'axios';
 
 // Mui
-import {
-  Box,
-  FormControl,
-  Button,
-  DialogTitle,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-} from '@mui/material';
+import { Box, Button, Container, Typography, Radio, RadioGroup, FormControlLabel } from '@mui/material';
 
 // คำถาม
-import { PapperBlock, RadioGroupVertical } from 'dan-components';
+import { PapperBlock } from 'dan-components';
+// import axios from 'axios';
 
 // ข้อมูลจำลอง
 import questions from '../../api/dummy/question';
 // const interestSurveyId = 1;
 
 export default function InterestQuestion() {
-  const [selectedAnswers, setSelectedAnswers] = useState([]);
-  const [checkAnswers, setCheckAnswers] = useState([]);
-  const [openPopupAns, setOpenPopupAns] = useState(false);
-  const [openPopupConfirm, setOpenPopupConfirm] = useState(false);
   // const [questions, setQuestions] = useState([]);
-  const [defaultselectedAnswers, setDefaultselectedAnswers] = useState([]);
+  const [formData, setFormData] = useState({ studentId: 1 });
 
   useEffect(() => {
-    questions.forEach((quest) => {
-      setDefaultselectedAnswers(
-        selectedAnswers.push({
-          questId: quest.id,
-          answerId: '0',
-        })
-      );
-    });
-  }, []);
+    console.log(formData);
+  }, [formData]);
 
-  // useEffect(() => {
-  //   axios
-  //     .post('http://localhost:3200/api/v1/interest_questions', {
-  //       interest_survey_id: 1,
-  //     })
-  //     .then((response) => {
-  //       setQuestions(response.data);
-  //     })
-  //     .catch((error) => {
-  //       console.log(error);
-  //     });
-  // }, []);
+  const handleSubmit = () => {
+    // ตรวจสอบว่าต้องตอบข้อที่เป็น rating ทุกข้อให้ครบ
+    const unansweredQuestions = questions.filter(
+      (question) => question.type === 'rating' && !formData[`question${question.feedbackId}`]
+    );
 
-  useEffect(() => {
-    console.log('questions: ', questions);
-  }, [questions]);
-
-  // log เพื่อเช็คค่าคำตอบที่ส่งมา
-  // useEffect(() => {
-  //   console.log(selectedAnswers);
-  // }, [selectedAnswers]);
-
-  const handleChange = (Ans) => {
-    const updatedAns = selectedAnswers.map((answer) => {
-      if (answer.questId === Ans.questId) {
-        return { ...answer, answerId: Ans.answerId };
-      }
-      return answer;
-    });
-    setSelectedAnswers(updatedAns);
-  };
-
-  // ใช้เช็คว่าเลือกคำตอบทุกข้อหรือยัง
-  const checkAns = () => {
-    const filteredQuestIds = selectedAnswers
-      .filter((item) => item.answerId === '0')
-      .map((item) => item.questId);
-    setCheckAnswers(filteredQuestIds);
-    if (filteredQuestIds.length > 0) setOpenPopupAns(true);
-    else {
-      setOpenPopupConfirm(true);
+    if (unansweredQuestions.length > 0) {
+      // มีข้อที่ยังไม่ได้เลือก
+      const unansweredQuestionIds = unansweredQuestions.map((question) => question.feedbackId);
+      alert(`กรุณาเลือกคำตอบของข้อที่: ${unansweredQuestionIds.join(', ')}`);
+      return;
     }
-  };
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    // console.log(' Submit Log :', selectedAnswers);
-    checkAns();
-  };
+    // แปลงข้อมูลก่อนส่งไปยัง API
+    const transformedData = questions.map((question) => ({
+      student_id: formData.studentId,
+      feedback_id: question.feedbackId,
+      feedback_answer: formData[`question${question.feedbackId}`],
+    }));
 
-  const handleClose = () => {
-    setOpenPopupAns(false);
-    setOpenPopupConfirm(false);
+    console.log(transformedData);
+
+    // ส่งข้อมูลไปยัง API ด้วย axios post
+    // axios
+    //   .post('http://localhost:3200/api/v1/student_feedback', transformedData)
+    //   .then((response) => {
+    //     console.log(response.data);
+    //   })
+    //   .catch((error) => {
+    //     console.error(error);
+    //   });
   };
 
   const handleReset = () => {
-    setSelectedAnswers(defaultselectedAnswers);
+    setFormData({ studentId: 1 });
+  };
+
+  const handleChangeAnswer = (questionId, answer) => {
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [questionId]: answer,
+    }));
   };
 
   return (
@@ -104,120 +70,59 @@ export default function InterestQuestion() {
         title='แบบสอบถามความสนใจต่อสายงานด้านต่างๆ'
         desc='Some text description'
       >
-        <form
-          onSubmit={handleSubmit}
-          onReset={handleReset}
-        >
-          <Box
-            sx={{
-              width: '100%',
-            }}
-          >
-            <FormControl>
+        <Container maxWidth='xl'>
+          <Box sx={{ mt: 4 }}>
+            {questions.map((question) => (
               <Box
-                sx={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  width: '100%',
-                  pl: '1.5rem',
-                }}
+                key={question.id}
+                sx={{ mt: 2 }}
               >
-                {questions.map((question) => (
-                  <RadioGroupVertical
-                    key={question.id}
-                    questionsId={question.id}
-                    Labelquestion={question.Labelquestion}
-                    answerLabels={question.answers}
-                    handleChange={handleChange}
-                  />
-                ))}
+                <Typography
+                  variant='h6'
+                  gutterBottom
+                >
+                  {question.id}. {question.Labelquestion}
+                </Typography>
+                <RadioGroup
+                  aria-labelledby='demo-row-radio-buttons-group-label'
+                  name='row-radio-buttons-group'
+                  value={formData[`question${question.id}`] || null}
+                  onChange={(event, value) => {
+                    handleChangeAnswer(`question${question.id}`, value);
+                  }}
+                >
+                  {question.answers.map((answer) => (
+                    <FormControlLabel
+                      key={answer.id}
+                      value={answer.id}
+                      control={<Radio />}
+                      label={answer.answer}
+                      sx={{ ml: 2 }}
+                    />
+                  ))}
+                </RadioGroup>
               </Box>
-            </FormControl>
-          </Box>
-          <Box
-            sx={{
-              display: 'flex',
-              flexDirection: 'row',
-              justifyContent: 'center',
-              width: '100%',
-              borderRadius: 1,
-            }}
-          >
-            <Button
-              variant='contained'
-              color='success'
-              type='submit'
-              sx={{ m: 1 }}
-            >
-              ยืนยัน
-            </Button>
-            <Button
-              variant='outlined'
-              color='error'
-              sx={{ m: 1 }}
-              type='reset'
-            >
-              reset
-            </Button>
-          </Box>
-        </form>
-      </PapperBlock>
-      <Dialog
-        open={openPopupAns}
-        onClose={handleClose}
-        aria-labelledby='alert-dialog-title'
-        aria-describedby='alert-dialog-description'
-      >
-        <DialogTitle id='alert-dialog-title'>
-          {'โปรดกรอกข้อมูลให้ครบทุกข้อ'}
-        </DialogTitle>
-        <DialogContent>
-          <DialogContentText id='alert-dialog-description'>
-            ข้อที่ยังไม่ได้เลือกคือข้อที่
-            {checkAnswers.map((checkAnswer, index) => (
-              <React.Fragment key={checkAnswer}>
-                {` ${checkAnswer}${
-                  index !== checkAnswers.length - 1 ? ', ' : ''
-                }`}
-              </React.Fragment>
             ))}
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button
-            onClick={handleClose}
-            autoFocus
-          >
-            ตกลง
-          </Button>
-        </DialogActions>
-      </Dialog>
-
-      <Dialog
-        open={openPopupConfirm}
-        onClose={handleClose}
-        aria-labelledby='alert-dialog-title'
-        aria-describedby='alert-dialog-description'
-      >
-        <DialogTitle id='alert-dialog-title'>
-          {'ยืนยันส่งแบบประเมินความสนใจ'}
-        </DialogTitle>
-        <DialogContent></DialogContent>
-        <DialogActions>
-          <Button
-            onClick={handleClose}
-            autoFocus
-          >
-            ตกลง
-          </Button>
-          <Button
-            onClick={handleClose}
-            autoFocus
-          >
-            ยกเลิก
-          </Button>
-        </DialogActions>
-      </Dialog>
+            <Box sx={{ mt: 4 }}>
+              <Button
+                variant='contained'
+                color='primary'
+                onClick={handleSubmit}
+              >
+                Submit
+              </Button>
+              <Button
+                variant='outlined'
+                color='secondary'
+                onClick={handleReset}
+                sx={{ ml: 2 }}
+              >
+                Reset
+              </Button>
+            </Box>
+          </Box>
+        </Container>
+      </PapperBlock>
     </div>
   );
 }

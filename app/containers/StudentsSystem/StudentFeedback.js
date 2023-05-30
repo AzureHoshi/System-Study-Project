@@ -3,17 +3,30 @@ import { Box, Button, Container, Rating, TextField, Typography } from '@mui/mate
 import axios from 'axios';
 import { PapperBlock } from 'dan-components';
 import questions from '../../api/dummy/feedbacksQuestion';
+const [studentId] = [{ stu_id: 1 }];
 
 function StudentFeedback() {
-  // const [questions, setQuestions] = useState([]);
-  const [formData, setFormData] = useState({ studentId: 1 });
+  const [formData, setFormData] = useState({ student_id: 1 });
+  const [status, setStatus] = useState([false]);
 
   useEffect(() => {
     console.log(formData);
   }, [formData]);
 
+  useEffect(() => {
+    axios
+      .post('http://localhost:3200/api/v1/getstatusfeedback', studentId)
+      .then((response) => {
+        console.log(response.data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, []);
+
   const handleSubmit = () => {
     // ตรวจสอบว่าต้องตอบข้อที่เป็น rating ทุกข้อให้ครบ
+    console.log(studentId);
     const unansweredQuestions = questions.filter(
       (question) => question.type === 'rating' && !formData[`question${question.feedbackId}`]
     );
@@ -27,15 +40,28 @@ function StudentFeedback() {
 
     // แปลงข้อมูลก่อนส่งไปยัง API
     const transformedData = questions.map((question) => ({
-      student_id: formData.studentId,
+      student_id: formData.student_id,
       feedback_id: question.feedbackId,
-      feedback_answer: formData[`question${question.feedbackId}`],
+      sf_answer: formData[`question${question.feedbackId}`],
     }));
 
     console.log(transformedData);
     // ส่งข้อมูลไปยัง API ด้วย axios post
     axios
       .post('http://localhost:3200/api/v1/student_feedback', transformedData)
+      .then((response) => {
+        console.log(response.data);
+        if (response.statusFeedback === 1) {
+          return setStatus(false);
+        }
+        return setStatus(true);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+
+    axios
+      .post('http://localhost:3200/api/v1/update_statusfeedback', studentId)
       .then((response) => {
         console.log(response.data);
       })
@@ -55,10 +81,10 @@ function StudentFeedback() {
     }));
   };
 
-  return (
+  const FillOfFeedback = () => (
     <div>
       <PapperBlock
-        title='แบบสอบถามประเมินความสนใจ'
+        title='แบบสอบถามความพึงพอใจต่อการใช้งานเว็บไซต์'
         desc='Some text description'
       >
         <Container maxWidth='xl'>
@@ -118,6 +144,22 @@ function StudentFeedback() {
       </PapperBlock>
     </div>
   );
+
+  const CompletedFeedback = () => (
+    <div>
+      <PapperBlock
+        title='แบบสอบถามประเมินความสนใจ'
+        desc='Some text description'
+      >
+        <Container maxWidth='xl'>
+          <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+            <Typography variant='h3'>คุณได้กรอกข้อมูล Feedback ไปแล้ว</Typography>
+          </Box>
+        </Container>
+      </PapperBlock>
+    </div>
+  );
+  return <div>{status === true ? <FillOfFeedback /> : <CompletedFeedback />}</div>;
 }
 
 export default StudentFeedback;
