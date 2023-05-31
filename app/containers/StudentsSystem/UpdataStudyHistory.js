@@ -17,7 +17,7 @@ import Typography from '@mui/material/Typography';
 // import TabPanel from '@mui/lab/TabPanel';
 // import AboutME from './AboutME';
 // import TestTable from './TestTable';
-// import Grid from '@mui/material/Unstable_Grid2';
+import Grid from '@mui/material/Unstable_Grid2';
 
 function UpdataStudyHistory() {
   const title = brand.name + ' - Blank Page';
@@ -47,7 +47,13 @@ function UpdataStudyHistory() {
       </Card>
 
       <Card sx={{ mt: 3.5 }}>
-        <Box sx={{ m: 2, flexGrow: 1 }}></Box>
+        <Box sx={{ m: 2, flexGrow: 1 }}>
+          <Grid container spacing={0}>
+            <Grid xs={4}>
+              <Box></Box>
+            </Grid>
+          </Grid>
+        </Box>
       </Card>
     </div>
   );
