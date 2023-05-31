@@ -1,4 +1,8 @@
-/* eslint-disable */
+/**
+ * /* eslint-disable
+ *
+ * @format
+ */
 
 import React from 'react';
 import Loading from 'dan-components/Loading';
@@ -23,7 +27,7 @@ export const RecommendInterest = loadable(
   }
 );
 export const StudyHistory = loadable(
-  () => import('./StudentsSystem/StudyHistory'),
+  () => import('./StudentsSystem/StudyHistory/StudyHistory.js'),
   {
     fallback: <Loading />,
   }
