@@ -3,16 +3,16 @@ import { Box, Button, Container, Rating, TextField, Typography } from '@mui/mate
 import axios from 'axios';
 import { PapperBlock } from 'dan-components';
 import questions from '../../api/dummy/feedbacksQuestion';
-const studentId = { stu_id: 1 };
+const studentId = { stu_code: 10 };
 
 function StudentFeedback() {
   const [formData, setFormData] = useState(studentId);
   const [status, setStatus] = useState(true);
 
   // เช็คค่า form data
-  // useEffect(() => {
-  //   console.log(formData);
-  // }, [formData]);
+  useEffect(() => {
+    console.log(formData);
+  }, [formData]);
 
   useEffect(() => {
     axios
@@ -46,7 +46,7 @@ function StudentFeedback() {
 
     // แปลงข้อมูลก่อนส่งไปยัง API
     const transformedData = questions.map((question) => ({
-      student_id: formData.student_id,
+      stu_code: formData.stu_code,
       feedback_id: question.feedbackId,
       sf_answer: formData[`question${question.feedbackId}`],
     }));
@@ -57,10 +57,6 @@ function StudentFeedback() {
       .post('http://localhost:3200/api/v1/student_feedback', transformedData)
       .then((response) => {
         console.log(response.data);
-        if (response.statusFeedback === 1) {
-          return setStatus(false);
-        }
-        return setStatus(true);
       })
       .catch((error) => {
         console.error(error);
@@ -70,6 +66,7 @@ function StudentFeedback() {
       .post('http://localhost:3200/api/v1/update_statusfeedback', studentId)
       .then((response) => {
         console.log(response.data);
+        setStatus(false);
       })
       .catch((error) => {
         console.error(error);

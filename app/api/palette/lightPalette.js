@@ -30,7 +30,7 @@ const lightPalette = {
         contrastText: '#fff',
       },
     },
-  }
+  },
 };
 
 export default lightPalette;
