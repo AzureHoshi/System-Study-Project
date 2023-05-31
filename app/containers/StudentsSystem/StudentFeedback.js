@@ -3,15 +3,16 @@ import { Box, Button, Container, Rating, TextField, Typography } from '@mui/mate
 import axios from 'axios';
 import { PapperBlock } from 'dan-components';
 import questions from '../../api/dummy/feedbacksQuestion';
-const [studentId] = [{ stu_id: 1 }];
+const studentId = { stu_id: 1 };
 
 function StudentFeedback() {
-  const [formData, setFormData] = useState({ student_id: 1 });
-  const [status, setStatus] = useState([false]);
+  const [formData, setFormData] = useState(studentId);
+  const [status, setStatus] = useState(true);
 
-  useEffect(() => {
-    console.log(formData);
-  }, [formData]);
+  // เช็คค่า form data
+  // useEffect(() => {
+  //   console.log(formData);
+  // }, [formData]);
 
   useEffect(() => {
     axios
@@ -19,9 +20,10 @@ function StudentFeedback() {
       .then((response) => {
         console.log(response.data.statusFeedback);
         if (response.data.statusFeedback === 0) {
-          return setStatus(true);
+          setStatus(true);
+        } else {
+          setStatus(false);
         }
-        return setStatus(false);
       })
       .catch((error) => {
         console.error(error);
@@ -84,6 +86,21 @@ function StudentFeedback() {
       [questionId]: answer,
     }));
   };
+
+  const CompletedFeedback = () => (
+    <div>
+      <PapperBlock
+        title='แบบสอบถามประเมินความสนใจ'
+        desc='Some text description'
+      >
+        <Container maxWidth='xl'>
+          <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+            <Typography variant='h3'>คุณได้กรอกข้อมูล Feedback ไปแล้ว</Typography>
+          </Box>
+        </Container>
+      </PapperBlock>
+    </div>
+  );
 
   const FillOfFeedback = () => (
     <div>
@@ -149,20 +166,6 @@ function StudentFeedback() {
     </div>
   );
 
-  const CompletedFeedback = () => (
-    <div>
-      <PapperBlock
-        title='แบบสอบถามประเมินความสนใจ'
-        desc='Some text description'
-      >
-        <Container maxWidth='xl'>
-          <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-            <Typography variant='h3'>คุณได้กรอกข้อมูล Feedback ไปแล้ว</Typography>
-          </Box>
-        </Container>
-      </PapperBlock>
-    </div>
-  );
   return <div>{status === true ? <FillOfFeedback /> : <CompletedFeedback />}</div>;
 }
 
