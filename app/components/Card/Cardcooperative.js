@@ -18,7 +18,7 @@ const Cardcooperative = (props) => {
   const { projectName, projectTags, projectImg } = props;
   console.log(projectImg);
   return (
-    <Card sx={{ maxWidth: 280 }}>
+    <Card sx={{ maxWidth: 280, boxShadow: 3 }}>
       <CardActionArea>
         <CardMedia
           component='img'
