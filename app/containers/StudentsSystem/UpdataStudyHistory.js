@@ -11,16 +11,14 @@ import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import Button from '@mui/material/Button';
-// import Tab from '@mui/material/Tab';
-// import TabContext from '@mui/lab/TabContext';
-// import TabList from '@mui/lab/TabList';
-// import TabPanel from '@mui/lab/TabPanel';
-// import AboutME from './AboutME';
-// import TestTable from './TestTable';
 import Grid from '@mui/material/Unstable_Grid2';
 import Paper from '@mui/material/Paper';
 import { styled } from '@mui/material/styles';
 import TextField from '@mui/material/TextField';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemText from '@mui/material/ListItemText';
 
 import AddIcon from '@mui/icons-material/Add';
 import ClearAllIcon from '@mui/icons-material/ClearAll';
@@ -110,10 +108,50 @@ function UpdataStudyHistory() {
                     id='outlined-basic'
                     label='Search Subject'
                     variant='outlined'
-                    sx={{ width: '90%' }}
+                    sx={{ width: '95%' }}
                   />
                   <Button variant='text' startIcon={<SearchIcon />} />
                 </Stack>
+              </Box>
+              <Divider sx={{ mt: 1.5 }} />
+              <Box sx={{ width: '100%' }}>
+                <List>
+                  <ListItem disablePadding>
+                    <ListItemButton>
+                      <ListItemText>
+                        <Typography sx={{ mr: 1.5 }}>GEBLC101</Typography>
+                      </ListItemText>
+                      <ListItemText
+                        primary='ภาษาอังกฤษเพื่อการสื่อสารในชีวิตประจำวัน'
+                        secondary='English for Everyday Communication'
+                      />
+                    </ListItemButton>
+                  </ListItem>
+
+                  <ListItem disablePadding>
+                    <ListItemButton>
+                      <ListItemText>
+                        <Typography>GEBLC102</Typography>
+                      </ListItemText>
+                      <ListItemText
+                        primary='ภาษาอังกฤษเพื่อทักษะชีวิต'
+                        secondary='English for Life Skills'
+                      />
+                    </ListItemButton>
+                  </ListItem>
+
+                  <ListItem disablePadding>
+                    <ListItemButton>
+                      <ListItemText>
+                        <Typography>GEBLC103</Typography>
+                      </ListItemText>
+                      <ListItemText
+                        primary='ภาษาอังกฤษเชิงวิชาการ'
+                        secondary='Academic English'
+                      />
+                    </ListItemButton>
+                  </ListItem>
+                </List>
               </Box>
             </Item>
           </Grid>
