@@ -1,24 +1,20 @@
 import React, { useState, useEffect } from 'react';
-// import axios from 'axios';
+import axios from 'axios';
 
 // Mui
 import { Box, Button, Container, Typography, RadioGroup, Radio, FormControlLabel } from '@mui/material';
-
-// คำถาม
 import { PapperBlock } from 'dan-components';
-import axios from 'axios';
-
-// import axios from 'axios';
 
 // ข้อมูลจำลอง
 // import questions from '../../api/dummy/question';
 // const interestSurveyId = 1;
 // const stuCode = 10;
+const stuIdObj = { student_id: 1 };
 const stuCodeObj = { stu_code: 10 };
 
 export default function InterestQuestion() {
   const [questions, setQuestions] = useState([]);
-  const [formData, setFormData] = useState(stuCodeObj);
+  const [formData, setFormData] = useState(stuIdObj);
 
   useEffect(() => {
     console.log(formData);
@@ -49,26 +45,26 @@ export default function InterestQuestion() {
 
     // แปลงข้อมูลก่อนส่งไปยัง API
     const transformedData = questions.map((question) => ({
-      stu_code: formData.stu_code,
+      student_id: formData.student_id,
       interest_question_id: question.interest_question_id,
-      ssa_answer: formData[`question${question.interest_question_id}`],
+      interest_answers_id: formData[`question${question.interest_question_id}`],
     }));
 
     console.log(transformedData);
 
     // ส่งข้อมูลไปยัง API ด้วย axios post
-    // axios
-    //   .post('http://localhost:3200/api/v1/student_feedback', transformedData)
-    //   .then((response) => {
-    //     console.log(response.data);
-    //   })
-    //   .catch((error) => {
-    //     console.error(error);
-    //   });
+    axios
+      .post('http://localhost:3200/api/v1/student_answers', transformedData)
+      .then((response) => {
+        console.log(response.data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   };
 
   const handleReset = () => {
-    setFormData(stuCodeObj);
+    setFormData(stuIdObj);
   };
 
   const handleChangeAnswer = (questionId, answer) => {
@@ -105,15 +101,6 @@ export default function InterestQuestion() {
                     handleChangeAnswer(`question${question.interest_question_id}`, value);
                   }}
                 >
-                  {/* {question.answers.map((answer) => (
-                    <FormControlLabel
-                      key={answer.id}
-                      value={answer.id}
-                      control={<Radio />}
-                      label={answer.answer}
-                      sx={{ m: 0.5 }}
-                    />
-                  ))} */}
                   <AnswerRadioGroup interest_question_id={question.interest_question_id} />
                 </RadioGroup>
               </Box>
@@ -163,10 +150,10 @@ const AnswerRadioGroup = (interestQuestionId) => {
     <div>
       {answerData.map((answer) => (
         <FormControlLabel
-          key={answer.answer_question_id}
-          value={answer.answer_question_id}
+          key={answer.interest_answers_id}
+          value={answer.interest_answers_id}
           control={<Radio />}
-          label={answer.answer_question_title}
+          label={answer.interest_answers_title}
           sx={{ m: 0.5 }}
         />
       ))}

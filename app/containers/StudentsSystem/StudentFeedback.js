@@ -3,10 +3,12 @@ import { Box, Button, Container, Rating, TextField, Typography } from '@mui/mate
 import axios from 'axios';
 import { PapperBlock } from 'dan-components';
 import questions from '../../api/dummy/feedbacksQuestion';
-const studentId = { stu_code: 10 };
+// const studentId = { stu_code: 10 };
+const stuIdObj = { student_id: 1 };
+const stuCodeObj = { stu_code: 10 };
 
 function StudentFeedback() {
-  const [formData, setFormData] = useState(studentId);
+  const [formData, setFormData] = useState(stuIdObj);
   const [status, setStatus] = useState(true);
 
   // เช็คค่า form data
@@ -16,7 +18,7 @@ function StudentFeedback() {
 
   useEffect(() => {
     axios
-      .post('http://localhost:3200/api/v1/getstatusfeedback', studentId)
+      .post('http://localhost:3200/api/v1/getstatusfeedback', stuCodeObj)
       .then((response) => {
         console.log(response.data.statusFeedback);
         if (response.data.statusFeedback === 0) {
@@ -32,7 +34,6 @@ function StudentFeedback() {
 
   const handleSubmit = () => {
     // ตรวจสอบว่าต้องตอบข้อที่เป็น rating ทุกข้อให้ครบ
-    console.log(studentId);
     const unansweredQuestions = questions.filter(
       (question) => question.type === 'rating' && !formData[`question${question.feedbackId}`]
     );
@@ -44,9 +45,10 @@ function StudentFeedback() {
       return;
     }
 
+    console.log(formData);
     // แปลงข้อมูลก่อนส่งไปยัง API
     const transformedData = questions.map((question) => ({
-      stu_code: formData.stu_code,
+      student_id: formData.student_id,
       feedback_id: question.feedbackId,
       sf_answer: formData[`question${question.feedbackId}`],
     }));
@@ -63,7 +65,7 @@ function StudentFeedback() {
       });
 
     axios
-      .post('http://localhost:3200/api/v1/update_statusfeedback', studentId)
+      .post('http://localhost:3200/api/v1/update_statusfeedback', stuCodeObj)
       .then((response) => {
         console.log(response.data);
         setStatus(false);
