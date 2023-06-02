@@ -1,49 +1,112 @@
 import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
 
 // Mui
-import { Box, Typography, Button, Tabs, Tab, Pagination } from '@mui/material';
+import {
+  Box,
+  Typography,
+  Pagination,
+  FormControl,
+  FormLabel,
+  RadioGroup,
+  FormControlLabel,
+  Radio,
+} from '@mui/material';
 import { Cardcooperative } from 'dan-components';
 // data
 import studentprojects from '../../api/dummy/studentprojects';
 
-function TabPanel(props) {
-  const { children, value, index, ...other } = props;
+function RecommendInterest() {
+  const [selectedValueData, setSelectedValueData] = useState('1'); // ข้อมูลที่เลือกการแสดงข้อมูล
+
+  const handleSelectedDataChange = (event) => {
+    setSelectedValueData(event.target.value);
+  };
+
+  // const dataType1 = () => (
+  //   <Box sx={{ m: 1 }}>
+  //     <FormLabel id='demo-row-radio-buttons-group-label'>ประเภทโครงงาน</FormLabel>
+  //     <RadioGroup
+  //       row
+  //       name='row-radio-buttons-group'
+  //     >
+  //       <FormControlLabel
+  //         value='0'
+  //         control={<Radio />}
+  //         label='Hardware'
+  //       />
+  //       <FormControlLabel
+  //         value='1'
+  //         control={<Radio />}
+  //         label='Software'
+  //       />
+  //     </RadioGroup>
+  //   </Box>
+  // );
+
+  // const dataType2 = () => (
+  //   <Box sx={{ m: 1 }}>
+  //     <FormLabel id='demo-row-radio-buttons-group-label'>ประเภทโครงงาน</FormLabel>
+  //     <RadioGroup
+  //       row
+  //       name='row-radio-buttons-group'
+  //     >
+  //       <FormControlLabel
+  //         value='0'
+  //         control={<Radio />}
+  //         label='Hardware'
+  //       />
+  //       <FormControlLabel
+  //         value='1'
+  //         control={<Radio />}
+  //         label='Software'
+  //       />
+  //     </RadioGroup>
+  //   </Box>
+  // );
 
   return (
-    <div
-      role='tabpanel'
-      hidden={value !== index}
-      id={`simple-tabpanel-${index}`}
-      aria-labelledby={`simple-tab-${index}`}
-      {...other}
-    >
-      {value === index && (
-        <Box sx={{ p: 3 }}>
-          <Typography>{children}</Typography>
+    <Box sx={{ width: '100%' }}>
+      <Box
+        sx={{
+          bgcolor: 'background.paper',
+          py: 2,
+          borderRadius: 2,
+          mb: '2rem',
+          p: '1rem',
+          display: 'column',
+          direction: 'row',
+        }}
+      >
+        <Box sx={{ m: 1 }}>
+          <FormControl>
+            <FormLabel id='demo-row-radio-buttons-group-label'>เลือกข้อมูลที่การแสดง</FormLabel>
+            <RadioGroup
+              row
+              value={selectedValueData}
+              onChange={handleSelectedDataChange}
+            >
+              <FormControlLabel
+                value='1'
+                control={<Radio />}
+                label='โครงงาน'
+              />
+              <FormControlLabel
+                value='2'
+                control={<Radio />}
+                label='สหกิจ'
+              />
+            </RadioGroup>
+          </FormControl>
         </Box>
-      )}
-    </div>
+      </Box>
+      {selectedValueData === '1' ? <ShowDataProject /> : <ShowDataCooperative />}
+    </Box>
   );
 }
 
-TabPanel.propTypes = {
-  children: PropTypes.node,
-  index: PropTypes.number.isRequired,
-  value: PropTypes.number.isRequired,
-};
-
-function a11yProps(index) {
-  return {
-    id: `simple-tab-${index}`,
-    'aria-controls': `simple-tabpanel-${index}`,
-  };
-}
-
-function RecommendInterest() {
-  const [valueTabs, setValueTabs] = React.useState(0);
+const ShowDataProject = () => {
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 12; // จำนวนรายการต่อหน้า
+  const itemsPerPage = 15; // จำนวนรายการต่อหน้า
   const [totalItems, setTotalItems] = useState(0); // จำนวนรายการทั้งหมด
   const [data, setData] = useState([]); // ข้อมูล Card จาก API
 
@@ -62,109 +125,81 @@ function RecommendInterest() {
   const handlePageChange = (event, valuePage) => {
     setCurrentPage(valuePage);
   };
-
-  const handleTabsChange = (event, newValue) => {
-    setValueTabs(newValue);
-  };
   return (
-    <div>
-      <Box
-        sx={{
-          p: 1,
-          m: 0.5,
-          maxWidth: '100%',
-          bgcolor: 'background.paper',
-          borderRadius: 1,
-        }}
-      >
-        <Box sx={{ my: '1rem' }}>
-          <Tabs
-            value={valueTabs}
-            onChange={handleTabsChange}
-            aria-label='basic tabs example'
+    <Box sx={{ bgcolor: 'background.paper', py: 2, borderRadius: 2 }}>
+      <Box sx={{ m: '1.5rem', p: '1rem' }}>
+        <FormControl>
+          <FormLabel id='demo-row-radio-buttons-group-label'>ประเภทโครงงาน</FormLabel>
+          <RadioGroup
+            row
+            aria-labelledby='demo-row-radio-buttons-group-label'
+            name='row-radio-buttons-group'
           >
-            <Tab
-              label='แนะนำโครงงาน'
-              {...a11yProps(0)}
+            <FormControlLabel
+              value='1'
+              control={<Radio />}
+              label='Hardware'
             />
-            <Tab
-              label='แนะนำสหกิจ'
-              {...a11yProps(1)}
+            <FormControlLabel
+              value='2'
+              control={<Radio />}
+              label='Software'
             />
-          </Tabs>
-        </Box>
+          </RadioGroup>
+        </FormControl>
+      </Box>
+      <Box>
         <Box
           sx={{
             display: 'flex',
-            flexDirection: 'row',
-            justifyContent: 'space-between',
+            flexWrap: 'wrap',
+            p: 1,
+            maxWidth: '100%',
+            justifyContent: 'center',
           }}
         >
-          <TabPanel
-            value={valueTabs}
-            index={0}
-          >
-            <Box>
-              <Button variant='contained'>กรอกประเภทโปรเจ็ค</Button>
-              <Button variant='contained'>กรอกจากความใหม่</Button>
-              <Button variant='contained'>นึกไม่ออก</Button>
-            </Box>
-            <Box sx={{ width: '100%' }}>
-              <Box
-                sx={{
-                  display: 'flex',
-                  flexWrap: 'wrap',
-                  p: 1,
-                  m: 1,
-                  bgcolor: 'background.paper',
-                  maxWidth: '100%',
-                  borderRadius: 1,
-                  justifyContent: 'center',
-                }}
-              >
-                {currentItems.map((item, index) => (
-                  <Box
-                    sx={{ m: '1rem' }}
-                    key={index}
-                  >
-                    <Cardcooperative
-                      projectName={item.projectName}
-                      projectTags={item.projectTags}
-                      projectImg={item.projectImg}
-                    ></Cardcooperative>
-                  </Box>
-                ))}
-              </Box>
-            </Box>
+          {currentItems.map((item, index) => (
             <Box
-              sx={{
-                display: 'flex',
-                justifyContent: 'flex-end',
-                flexDirection: 'row',
-                alignItems: 'center',
-                m: '1',
-              }}
+              sx={{ m: '0.5rem' }}
+              key={index}
             >
-              <Typography sx={{ border: '1 solid' }}>Page: {currentPage}</Typography>
-              <Pagination
-                count={Math.ceil(totalItems / itemsPerPage)}
-                page={currentPage}
-                onChange={handlePageChange}
-                siblingCount={2}
-                boundaryCount={2}
-              />
+              <Cardcooperative
+                projectName={item.projectName}
+                projectTags={item.projectTags}
+                projectImg={item.projectImg}
+              ></Cardcooperative>
             </Box>
-          </TabPanel>
-          <TabPanel
-            value={valueTabs}
-            index={1}
-          >
-            Item Two
-          </TabPanel>
+          ))}
         </Box>
       </Box>
-    </div>
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'flex-end',
+          flexDirection: 'row',
+          alignItems: 'center',
+          m: '1',
+        }}
+      >
+        <Typography sx={{ border: '1 solid' }}>Page: {currentPage}</Typography>
+        <Pagination
+          count={Math.ceil(totalItems / itemsPerPage)}
+          page={currentPage}
+          onChange={handlePageChange}
+          siblingCount={2}
+          boundaryCount={2}
+        />
+      </Box>
+    </Box>
   );
-}
+};
 
+const ShowDataCooperative = () => {
+  const current = 'test';
+  return (
+    <Box sx={{ bgcolor: 'background.paper', py: 2, borderRadius: 2 }}>
+      <Typography>{current}</Typography>
+    </Box>
+  );
+};
 export default RecommendInterest;
