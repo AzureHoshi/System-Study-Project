@@ -15,23 +15,27 @@ import {
 } from '@mui/material';
 
 const Cardcooperative = (props) => {
-  const { projectName, projectTags, projectImg } = props;
-  console.log(projectImg);
+  const { Name, Tags, Img } = props;
   return (
-    <Card sx={{ maxWidth: 280, boxShadow: 3 }}>
+    <Card sx={{ maxWidth: 280, boxShadow: 3, overflowWrap: 'break-word' }}>
       <CardActionArea>
         <CardMedia
           component='img'
           height='280'
-          image={projectImg}
+          image={Img}
         />
-        <CardContent>
+        <CardContent
+          sx={{
+            overflowWrap: 'anywhere',
+          }}
+        >
           <Typography
             gutterBottom
             variant='h6'
             component='div'
+            noWrap
           >
-            {projectName}
+            {Name}
           </Typography>
           <Stack
             direction='row'
@@ -39,7 +43,7 @@ const Cardcooperative = (props) => {
             alignItems='flex-start'
             spacing={0.5}
           >
-            {projectTags.map((tag) => (
+            {Tags.map((tag) => (
               <Chip
                 key={tag.id}
                 label={tag.tagName}
@@ -61,9 +65,9 @@ const Cardcooperative = (props) => {
 };
 
 Cardcooperative.propTypes = {
-  projectName: PropTypes.string.isRequired,
-  projectTags: PropTypes.array.isRequired,
-  projectImg: PropTypes.string.isRequired,
+  Name: PropTypes.string.isRequired,
+  Tags: PropTypes.array.isRequired,
+  Img: PropTypes.string.isRequired,
 };
 
 export default Cardcooperative;
