@@ -15,7 +15,7 @@ export const InterestQuestion = loadable(
   }
 );
 export const UpdataStudyHistory = loadable(
-  () => import('./StudentsSystem/UpdataStudyHistory'),
+  () => import('./StudentsSystem/UpdataStudyHistory/UpdataStudyHistory'),
   {
     fallback: <Loading />,
   }
